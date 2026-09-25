@@ -1,0 +1,24 @@
+.venv/
+__pycache__/
+.pytest_cache/
+build/
+dist/
+release/
+verification/
+model-cache/
+reference/
+*.pyc
+
+# Local tools, credentials and user-generated data
+tools/
+Ket-qua/
+.biliscribe-cache/
+.env
+.env.*
+*.dpapi
+cookies.txt
+settings.json
+job-*.json
+# Distributed as release assets, not in Git
+vendor/*.exe
+vendor/models/**/*.onnx

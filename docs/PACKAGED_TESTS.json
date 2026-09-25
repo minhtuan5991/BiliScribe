@@ -1,0 +1,66 @@
+{
+  "frozen_self_test": {
+    "imports": true,
+    "opencc": true,
+    "vad_silence": true,
+    "ffmpeg_mp3": true,
+    "ui_render": true,
+    "ui_small": true,
+    "ui_advanced": true,
+    "empty_input_validation": true,
+    "host_validation": true,
+    "help_render": true,
+    "versions": {
+      "yt_dlp": "2026.08.19",
+      "ctranslate2": "4.8.2",
+      "onnxruntime": "1.30.0",
+      "av": "18.1.0"
+    }
+  },
+  "worker_cancellation": {
+    "job_object_assigned": true,
+    "worker_started": true,
+    "cancel_completed": true,
+    "status": "Đã dừng · Chạy lại để tiếp tục các đoạn đã lưu",
+    "events_received": true,
+    "elapsed": 3.62
+  },
+  "whole_video": {
+    "event": "done",
+    "completed": 1,
+    "failed": 0,
+    "elapsed": 175.9,
+    "errors": []
+  },
+  "engine": {
+    "model": "large-v3",
+    "device": "cuda",
+    "compute_type": "int8_float16",
+    "threads": 7,
+    "batch_size": 1,
+    "beam_size": 5,
+    "gpu_index": 0
+  },
+  "duration_seconds": 535.68,
+  "segments": 369,
+  "review_flagged": 0,
+  "monotonic_timestamps": true,
+  "last_end": 535.32,
+  "outputs_exist": true,
+  "installer_install_test": {
+    "uninstall_registry_removed": true,
+    "uninstall_registry_created": true,
+    "self_test_output": "verification\\installed-self-test\\self-test.json",
+    "installed_self_test_exit_code": 0,
+    "installer_exit_code": 0,
+    "installed_exe_removed": true,
+    "uninstaller_exit_code": 0
+  },
+  "cached_gui_test": {
+    "status": "Xong · 1 thành công · 0 lỗi",
+    "elapsed": 2.66,
+    "preview_chars": 3636,
+    "reused_checkpoint": true,
+    "input_locked_after_finish": false
+  }
+}

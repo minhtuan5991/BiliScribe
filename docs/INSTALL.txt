@@ -1,0 +1,14 @@
+BiliScribe 1.1.1 - Windows 10/11 x64
+
+Dán link Bilibili để lấy MP3 và transcript tiếng Trung.
+Không cần tự cài Python hoặc FFmpeg.
+
+Bộ cài đã có SenseVoice: chế độ Máy nhẹ / nhanh dùng được ngay.
+Large v3 / Turbo cần tải mô hình ở lần sử dụng đầu tiên.
+Nhận dạng diễn ra tại máy. Tải video Bilibili vẫn cần Internet.
+
+Chế độ Ưu tiên độ sát đối chiếu hai mô hình và chỉ ra chỗ cần
+nghe lại. Sai khác không khẳng định bản nào đúng.
+
+Cài đặt cho người dùng Windows hiện tại, không cần quyền quản trị.
+Kết quả, cài đặt cá nhân và mô hình tải thêm được giữ khi gỡ app.
