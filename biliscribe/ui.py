@@ -154,6 +154,10 @@ class MainWindow(QMainWindow):
         self.mode = "transcribe"
         self.row_progress = {}
         self.active_index = None
+        self.update_check = None
+        self.update_url = None
+        self.update_timer = QTimer(self)
+        self.update_timer.timeout.connect(self._poll_update)
         self._build()
         self._restore()
         self.elapsed_timer = QTimer(self)
@@ -190,6 +194,10 @@ class MainWindow(QMainWindow):
         side.addWidget(self.processing_note)
         side.addSpacing(12)
         side.addWidget(label("Windows 10 / 11 · 64-bit\nPhiên bản " + __version__))
+        self.update_btn = button("", self._open_update)
+        self.update_btn.setAccessibleName("Mở trang tải bản cập nhật BiliScribe")
+        self.update_btn.hide()
+        side.addWidget(self.update_btn)
         horizontal.addWidget(sidebar)
         self.pages = QStackedWidget()
         horizontal.addWidget(self.pages, 1)
@@ -818,6 +826,35 @@ class MainWindow(QMainWindow):
         else:
             QMessageBox.information(self, "Kết quả đã di chuyển", "Thư mục này đã được di chuyển hoặc xóa.")
 
+    def start_update_check(self):
+        if self.update_check is not None:
+            return
+        from .updates import StartupCheck
+        self.update_check = StartupCheck()
+        self.update_check.start()
+        self.update_timer.start(150)
+
+    def _poll_update(self):
+        result = self.update_check.poll() if self.update_check else None
+        if result is None:
+            return
+        self.update_timer.stop()
+        status, update = result
+        if status != "ok":
+            self.log.appendPlainText("Chưa kiểm tra được bản cập nhật. App sẽ thử lại vào lần mở sau.")
+        elif update is None:
+            self.log.appendPlainText("BiliScribe đang ở phiên bản mới nhất.")
+        else:
+            self.update_url = update.url
+            self.update_btn.setText(f"Có bản {update.version}\nMở trang tải")
+            self.update_btn.setToolTip("Mở GitHub để tải bộ cài mới.")
+            self.update_btn.show()
+            self.log.appendPlainText(f"Có BiliScribe {update.version}. Bấm Mở trang tải ở thanh bên trái.")
+
+    def _open_update(self):
+        if self.update_url:
+            QDesktopServices.openUrl(QUrl(self.update_url))
+
     def closeEvent(self, event):
         if self.proc:
             reply = QMessageBox.question(self, "Đóng BiliScribe", "Đang xử lý. Dừng công việc và đóng ứng dụng? Phần đã hoàn tất vẫn được giữ.")
@@ -828,6 +865,9 @@ class MainWindow(QMainWindow):
                 self.job.terminate()
             self.proc.kill()
             self.proc.waitForFinished(2000)
+        self.update_timer.stop()
+        if self.update_check:
+            self.update_check.close()
         self.log.close()
         event.accept()
 
@@ -840,4 +880,5 @@ def run_gui():
     app.setStyleSheet(STYLE)
     window = MainWindow()
     window.show()
+    QTimer.singleShot(500, window.start_update_check)
     return app.exec()

@@ -81,6 +81,18 @@ def self_test(destination):
         checks["pixazo_ui"] = win.grab().save(str(output / "app-pixazo.png"))
         import websockets
         checks["websockets_import"] = bool(websockets.__version__)
+        from .updates import StartupCheck, Update, REPOSITORY
+        win.update_check = StartupCheck(lambda: Update("1.3.0", REPOSITORY + "/releases/tag/v1.3.0"))
+        win.update_check.start()
+        import time
+        for _ in range(20):
+            app.processEvents()
+            time.sleep(.02)
+            win._poll_update()
+            if win.update_url:
+                break
+        checks["update_notice"] = win.update_btn.isVisible() and bool(win.update_url)
+        checks["update_ui"] = win.grab().save(str(output / "app-update.png"))
         win._navigate(2)
         app.processEvents()
         checks["help_render"] = win.grab().save(str(output / "app-help.png"))

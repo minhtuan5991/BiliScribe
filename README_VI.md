@@ -1,10 +1,10 @@
-# BiliScribe 1.2.0
+# BiliScribe 1.2.1
 
 Dán link Bilibili → tải âm thanh → tạo transcript tiếng Trung trên máy hoặc qua Pixazo API.
 
 ## Cài và sử dụng
 
-1. Mở `release\BiliScribe-Setup-1.2.0-x64.exe`, bấm **Tiếp theo → Cài đặt**. Có shortcut Start Menu, tùy chọn Desktop và mục gỡ trong Settings > Apps.
+1. Mở `release\BiliScribe-Setup-1.2.1-x64.exe`, bấm **Tiếp theo → Cài đặt**. Có shortcut Start Menu, tùy chọn Desktop và mục gỡ trong Settings > Apps.
 2. Dán link, mỗi dòng một video. Link có `?p=2` giữ đúng phần 2. Có thể chọn file MP3/M4A/WAV/MP4 trên máy.
 3. Chọn chế độ và thư mục kết quả; có thể chọn `D:\Download-Transcript Bilibili\Ket-qua`.
 4. Bấm **Bắt đầu tạo transcript**. Khi xong, dùng **Mở TXT**, **Mở SRT**, **Đối chiếu** hoặc **Mở thư mục**.
@@ -49,7 +49,7 @@ Khi hoàn tất thành công, mỗi video chỉ còn đúng ba file:
 - `transcript_zh.srt`: phụ đề có thời gian ước lượng.
 - `doi_chieu_zh.txt`: sai khác Large v3 / SenseVoice khi chạy Ưu tiên độ sát + Large v3. Chế độ khác ghi rõ chưa đối chiếu hai mô hình, kèm các đoạn cần kiểm tra nếu có.
 
-MP3, JSON, bản đối chiếu trung gian, checkpoint và âm thanh tải tạm được xóa sau khi hoàn tất. Khi dừng hoặc gặp lỗi, chúng được giữ để chạy tiếp. File nguồn người dùng chọn trên máy, mô hình AI và lịch sử ứng dụng được giữ nguyên. Quy tắc áp dụng cho các lần xử lý bằng bản 1.2.0; không tự quét xóa kết quả cũ.
+MP3, JSON, bản đối chiếu trung gian, checkpoint và âm thanh tải tạm được xóa sau khi hoàn tất. Khi dừng hoặc gặp lỗi, chúng được giữ để chạy tiếp. File nguồn người dùng chọn trên máy, mô hình AI và lịch sử ứng dụng được giữ nguyên. Quy tắc áp dụng cho các lần xử lý bằng bản 1.2.1; không tự quét xóa kết quả cũ.
 
 Các hộp chọn không đổi lựa chọn khi lăn chuột, kể cả đang có tiêu điểm. Dùng nhấp chuột hoặc bàn phím để chọn.
 
@@ -91,3 +91,9 @@ Bộ cài tạo cục bộ, chưa ký chứng thư số; Windows có thể hiể
 `BUILD_WINDOWS.ps1` dùng Python 3.12 x64, PyInstaller và Inno Setup 6. Thư viện chốt phiên bản trong `requirements.txt` và `requirements-lock.txt`; `vendor/` gồm FFmpeg và SenseVoice đã kiểm tra SHA-256. Xem `THIRD_PARTY_NOTICES.md` để biết nguồn và giấy phép.
 
 `python -m pytest tests -q` chạy kiểm thử logic. `BiliScribeWorker.exe --self-test <thư-mục>` kiểm tra bản đóng gói: DLL, checksum và suy luận SenseVoice, VAD, MP3, Unicode, giao diện và kiểm tra link.
+
+## Kiểm tra cập nhật (từ 1.2.1)
+
+Mỗi lần mở app, BiliScribe kiểm tra bản phát hành ổn định mới nhất trên GitHub ở luồng nền. Khi có bản mới, nút **Có bản … / Mở trang tải** xuất hiện ở thanh bên trái. Bấm nút để mở trang phát hành, tải bộ cài rồi đóng app trước khi cài nâng cấp. App không tự tải hay tự chạy bộ cài.
+
+Không cần token GitHub. Yêu cầu kiểm tra chỉ gửi thông tin phiên bản app, không gửi âm thanh, transcript hoặc key Pixazo. Mất mạng, GitHub giới hạn truy cập hoặc lỗi phản hồi sẽ được ghi trong Nhật ký; bạn vẫn dùng app bình thường và lần mở tiếp theo app sẽ kiểm tra lại. Cài đặt và mô hình đã lưu được giữ nguyên.

@@ -11,7 +11,7 @@ import psutil
 
 root = Path(__file__).resolve().parent.parent
 sys.path.insert(0,str(root))
-work = root / 'verification/v1.2.0/packaged-cpu'
+work = root / 'verification/v1.2.1/packaged-cpu'
 work.mkdir(parents=True, exist_ok=True)
 request = {
     'sources': [str(root / 'release/Mau-kiem-thu/audio.mp3')],
@@ -29,7 +29,7 @@ for key in ('VIRTUAL_ENV', 'PYTHONHOME', 'PYTHONPATH'):
 t0 = time.monotonic()
 events = queue.Queue()
 with (work/'stderr.log').open('w', encoding='utf-8') as err:
-    proc = subprocess.Popen([str(root/'dist/BiliScribe-1.2.0/BiliScribeWorker.exe'), '--worker', str(work/'request.json')],
+    proc = subprocess.Popen([str(root/'dist/BiliScribe-1.2.1/BiliScribeWorker.exe'), '--worker', str(work/'request.json')],
         cwd=work, env=env, stdout=subprocess.PIPE, stderr=err, stdin=subprocess.PIPE,
         text=True, encoding='utf-8', creationflags=subprocess.CREATE_NO_WINDOW)
     def read():
