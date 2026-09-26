@@ -13,7 +13,7 @@ with zipfile.ZipFile(release / 'BiliScribe-Source-1.2.1.zip', 'w', zipfile.ZIP_D
         for path in item.rglob('*') if item.is_dir() else [item]:
             if path.is_file() and '__pycache__' not in path.parts and path.suffix != '.pyc':
                 archive.write(path, path.relative_to(root))
-shutil.copyfile(root / 'README_VI.md', 'README.md', release / 'HUONG_DAN.md')
+shutil.copyfile(root / 'README_VI.md', release / 'HUONG_DAN.md')
 sums = []
 for path in sorted(release.glob('*')):
     if path.suffix in ('.exe', '.zip'):
