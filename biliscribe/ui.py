@@ -16,6 +16,7 @@ from . import __version__
 from .config import MODELS, PROFILES, Settings, atomic_text, data_dir, load_settings, normalize_url, resource_path, save_settings
 from .windows import ProcessJob
 from .history import load_history
+from .output_files import transcript_file
 
 STYLE = """
 QWidget { font-family: 'Segoe UI'; font-size: 13px; color: #203E40; }
@@ -366,7 +367,7 @@ class MainWindow(QMainWindow):
         tools.addWidget(self.open_txt_btn)
         preview_layout.addLayout(tools)
         review_tools = QHBoxLayout()
-        self.srt_btn = button("Mở SRT", lambda: self._open_result_file("transcript_zh.srt"))
+        self.srt_btn = button("Mở SRT", lambda: self._open_transcript(".srt"))
         self.compare_btn = button("Đối chiếu", lambda: self._open_result_file("doi_chieu_zh.txt"))
         self.srt_btn.setEnabled(False)
         self.compare_btn.setEnabled(False)
@@ -442,7 +443,7 @@ class MainWindow(QMainWindow):
 <ul><li><b>Tự động:</b> SenseVoice có sẵn trên CPU; Large v3 / Turbo khi GPU sẵn sàng.</li><li><b>Ưu tiên độ sát:</b> Large v3 đầy đủ, beam 5, thêm bản SenseVoice độc lập để đánh dấu sai khác cần nghe lại. Bản chính được giữ nguyên.</li><li><b>Cân bằng:</b> Large v3 Turbo, giảm thời gian xử lý nhưng có thể nhận sai khác Large v3.</li><li><b>Máy nhẹ / nhanh:</b> SenseVoice INT8, chạy CPU, có dấu câu; phù hợp máy ít RAM.</li></ul>
 <p>SenseVoice có sẵn trong bộ cài. Các mô hình Whisper cần tải một lần (~75 MB đến ~3,1 GB), sau đó dùng lại. Tốc độ phụ thuộc máy, giọng đọc và âm thanh; không có mô hình nào bảo đảm đúng 100%.</p>
 <h2>3. Kết quả</h2>
-<p>Khi hoàn tất, mỗi video chỉ giữ <b>transcript_zh.txt</b>, <b>transcript_zh.srt</b> và <b>doi_chieu_zh.txt</b>. Âm thanh, JSON và dữ liệu tạm được xóa. Nếu dừng hoặc gặp lỗi, dữ liệu được giữ để tiếp tục. File nguồn bạn chọn trên máy không bị xóa.</p>
+<p>Khi hoàn tất, mỗi video chỉ giữ <b>Tên Việt không dấu_zh.txt</b>, <b>Tên Việt không dấu_zh.srt</b> và <b>doi_chieu_zh.txt</b>. Âm thanh, JSON và dữ liệu tạm được xóa. Nếu dừng hoặc gặp lỗi, dữ liệu được giữ để tiếp tục. File nguồn bạn chọn trên máy không bị xóa.</p>
 <p><b>doi_chieu_zh.txt:</b> chỗ Large v3 và SenseVoice khác nhau trong chế độ Ưu tiên độ sát; các chế độ khác ghi rõ chưa chạy đối chiếu hai mô hình. Sai khác không chứng minh mô hình nào đúng.</p>
 <p>Chế độ <b>Pixazo API</b> gửi âm thanh tới Pixazo, cần API key và credit; tối đa 4 đoạn song song. API key chỉ được nhớ khi bạn chọn, mã hóa bằng tài khoản Windows. Dừng/lỗi giữ tiến độ các đoạn đã xong. Các chế độ khác tiếp tục chạy trên máy.</p><p>App nhận dạng trên âm thanh gốc trước khi nén MP3. Không thêm lời văn, tóm tắt hay dùng mô hình ngôn ngữ để viết lại. Với Whisper, bạn có thể điền tên riêng / thuật ngữ ngắn trong Nâng cao; tránh nhập chỉ dẫn hoặc đoạn văn dài.</p>
 <h2>GPU, video dài và dừng / chạy lại</h2>
@@ -775,9 +776,9 @@ class MainWindow(QMainWindow):
             QDesktopServices.openUrl(QUrl.fromLocalFile(str(self.last_folder / name)))
 
     def _load_preview(self, folder):
-        self.srt_btn.setEnabled((folder / "transcript_zh.srt").is_file())
-        path = folder / "transcript_zh.txt"
-        if path.is_file():
+        self.srt_btn.setEnabled(transcript_file(folder, ".srt") is not None)
+        path = transcript_file(folder, ".txt")
+        if path:
             text = path.read_text("utf-8-sig")
             self.preview.setPlainText(text[:150000])
             if len(text) > 150000:
@@ -795,8 +796,12 @@ class MainWindow(QMainWindow):
         QApplication.clipboard().setText(self.preview.toPlainText())
 
     def _open_txt(self):
-        if self.last_folder and (self.last_folder / "transcript_zh.txt").exists():
-            QDesktopServices.openUrl(QUrl.fromLocalFile(str(self.last_folder / "transcript_zh.txt")))
+        self._open_transcript(".txt")
+
+    def _open_transcript(self, suffix):
+        path = transcript_file(self.last_folder, suffix) if self.last_folder else None
+        if path:
+            QDesktopServices.openUrl(QUrl.fromLocalFile(str(path)))
 
     def _open_output(self):
         path = self.last_folder or Path(self.output.text())

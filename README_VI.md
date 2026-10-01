@@ -1,10 +1,10 @@
-# BiliScribe 1.2.2
+# BiliScribe 1.2.3
 
 Dán link Bilibili → tải âm thanh → tạo transcript tiếng Trung trên máy hoặc qua Pixazo API.
 
 ## Cài và sử dụng
 
-1. Mở `release\BiliScribe-Setup-1.2.2-x64.exe`, bấm **Tiếp theo → Cài đặt**. Có shortcut Start Menu, tùy chọn Desktop và mục gỡ trong Settings > Apps.
+1. Mở `release\BiliScribe-Setup-1.2.3-x64.exe`, bấm **Tiếp theo → Cài đặt**. Có shortcut Start Menu, tùy chọn Desktop và mục gỡ trong Settings > Apps.
 2. Dán link, mỗi dòng một video. Link có `?p=2` giữ đúng phần 2. Có thể chọn file MP3/M4A/WAV/MP4 trên máy.
 3. Chọn chế độ và thư mục kết quả; có thể chọn `D:\Download-Transcript Bilibili\Ket-qua`.
 4. Bấm **Bắt đầu tạo transcript**. Khi xong, dùng **Mở TXT**, **Mở SRT**, **Đối chiếu** hoặc **Mở thư mục**.
@@ -45,8 +45,8 @@ Tài liệu nhà cung cấp: https://www.pixazo.ai/models/qwen-audio
 
 Khi hoàn tất thành công, mỗi video chỉ còn đúng ba file:
 
-- `transcript_zh.txt`: bản chép lời tiếng Trung.
-- `transcript_zh.srt`: phụ đề có thời gian ước lượng.
+- `Ten tieng Viet_zh.txt`: bản chép lời tiếng Trung; tên file lấy từ tên Việt không dấu.
+- `Ten tieng Viet_zh.srt`: phụ đề có thời gian ước lượng.
 - `doi_chieu_zh.txt`: sai khác Large v3 / SenseVoice khi chạy Ưu tiên độ sát + Large v3. Chế độ khác ghi rõ chưa đối chiếu hai mô hình, kèm các đoạn cần kiểm tra nếu có.
 
 MP3, JSON, bản đối chiếu trung gian, checkpoint và âm thanh tải tạm được xóa sau khi hoàn tất. Khi dừng hoặc gặp lỗi, chúng được giữ để chạy tiếp. File nguồn người dùng chọn trên máy, mô hình AI và lịch sử ứng dụng được giữ nguyên. Quy tắc áp dụng cho các lần xử lý bằng bản 1.2.1; không tự quét xóa kết quả cũ.
@@ -105,3 +105,11 @@ Sau khi xử lý thành công, thư mục mang tên **Tên tiếng Việt - Tên
 Chỉ tiêu đề đã làm sạch được gửi đến endpoint web Google Translate để dịch sang Việt, không gửi audio/transcript/API key. Không cần nhập thêm key. Bản dịch máy có thể chưa đúng sắc thái; endpoint web không có cam kết ổn định như Cloud Translation API. Dịch có giới hạn chờ 5 giây và lưu cache cục bộ để tái sử dụng. Khi mất mạng/dịch thất bại, app giữ tên Trung sạch và ghi lý do vào Nhật ký; transcript vẫn được lưu.
 
 Tên trùng thêm `(2)`, `(3)`; không ghi đè thư mục cũ. Tác vụ dở vẫn giữ tên nội bộ/checkpoint để tiếp tục, chỉ đổi tên sau khi hoàn tất và dọn còn ba file. Không tự đổi tên kết quả đã tạo bởi bản cũ. Mọi chế độ CPU/GPU/Pixazo và cài đặt hiện có được giữ nguyên.
+
+## Tên file hoàn tất (từ 1.2.3)
+
+Hai file transcript dùng tên Việt không dấu, có đuôi `_zh.txt` và `_zh.srt`. Ví dụ: `Nhung cau chuyen ky la ve luat le_zh.txt` và `Nhung cau chuyen ky la ve luat le_zh.srt`. File đối chiếu vẫn là `doi_chieu_zh.txt`, tổng cộng ba file. Chữ đ/Đ được chuyển thành d/D, dấu tiếng Việt và dấu câu không phù hợp được bỏ; tên dài được rút gọn theo giới hạn đường dẫn Windows.
+
+Chỉ đổi tên sau khi hoàn tất; không thay đổi nội dung tiếng Trung, mốc SRT hay checkpoint. Các nút Mở TXT/SRT và preview đọc được cả tên cũ lẫn tên mới. Nếu chưa có bản dịch, dùng phần tên gốc có thể chuyển thành chữ Latin; nếu không có, dùng `Video_zh.txt` / `Video_zh.srt` và Nhật ký báo chưa dịch được tên. Không tự đổi tên kết quả cũ.
+
+Bản 1.2.3 được phát hành trên GitHub; tải bộ cài từ trang Releases.

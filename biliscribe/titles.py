@@ -101,9 +101,10 @@ def vietnamese_title(title, cancel, emit):
     return value
 
 
-def output_name(title, translated, root):
+def output_name(title, translated, root, file_space=30):
     # Leave room for filenames and collision suffix on non-long-path Windows setups.
-    budget = min(180, 235 - len(str(Path(root).resolve())) - 30)
+    available = 235 - len(str(Path(root).resolve()))
+    budget = min(180, available - min(file_space, max(30, available // 2)))
     if budget < 24:
         raise OSError("Đường dẫn kết quả quá dài; hãy chọn thư mục ngắn hơn.")
     if translated:

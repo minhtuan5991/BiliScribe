@@ -1,13 +1,13 @@
 param()
 $ErrorActionPreference='Stop'
 $taskRoot=(Resolve-Path -LiteralPath (Join-Path $PSScriptRoot '..')).Path
-$taskArea=Join-Path $taskRoot 'verification\v1.2.2'
+$taskArea=Join-Path $taskRoot 'verification\v1.2.3'
 $taskInstall=Join-Path $taskArea 'installed-app'
 $taskRegistry='HKCU:\Software\Microsoft\Windows\CurrentVersion\Uninstall\{59136726-3F92-476B-9D2B-435184773E58}_is1'
 if (Test-Path -LiteralPath $taskRegistry) { throw 'An existing user installation is registered. Do not overwrite it during this test.' }
 if (Test-Path -LiteralPath $taskInstall) { throw 'Test install directory already exists; choose a fresh verified destination.' }
 $taskReport=[ordered]@{}
-foreach ($taskVersion in @('1.2.1','1.2.2')) {
+foreach ($taskVersion in @('1.2.2','1.2.3')) {
     $taskSetup=Join-Path $taskRoot "release\BiliScribe-Setup-$taskVersion-x64.exe"
     $taskArgs=@('/VERYSILENT','/SUPPRESSMSGBOXES','/NORESTART','/NOICONS','/TASKS=""',('/DIR="'+$taskInstall+'"'),('/LOG="'+(Join-Path $taskArea "install-$taskVersion.log")+'"'))
     $taskProcess=Start-Process -FilePath $taskSetup -ArgumentList $taskArgs -WindowStyle Hidden -Wait -PassThru

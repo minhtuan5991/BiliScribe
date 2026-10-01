@@ -70,7 +70,7 @@ def test_pipeline_cleanup_only_on_success(tmp_path, monkeypatch, outcome):
     else:
         assert run() == (0 if outcome in {"success", "dual"} else 1)
     if outcome in {"success", "dual"}:
-        assert {p.name for p in item["folder"].iterdir()} == FINAL_FILES
+        assert {p.name for p in item["folder"].iterdir()} == {"Kiem thu_zh.txt", "Kiem thu_zh.srt", "doi_chieu_zh.txt"}
         assert not item["work"].exists()
         report = (item["folder"] / "doi_chieu_zh.txt").read_text("utf-8-sig")
         assert ("Chưa chạy đối chiếu" in report) == (outcome == "success")

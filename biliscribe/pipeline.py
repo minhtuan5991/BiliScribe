@@ -16,6 +16,7 @@ from .sensevoice import SenseVoiceTranscriber
 from .comparison import compare_transcripts
 from .output_cleanup import cleanup_result, cleanup_cache
 from .titles import clean_title, vietnamese_title, output_name, rename_completed
+from .output_files import ascii_title, rename_transcripts
 
 
 def process_batch(sources, cfg: Settings, emit, cancel):
@@ -120,7 +121,9 @@ def process_batch(sources, cfg: Settings, emit, cancel):
                     emit("item", index=i, stage="Đặt tên thư mục kết quả", progress=98)
                     title_zh = clean_title(item["title"])
                     title_vi = vietnamese_title(title_zh, cancel, emit)
-                    final_name = output_name(title_zh, title_vi, cfg.output_dir)
+                    file_title = title_vi or title_zh
+                    final_name = output_name(title_zh, title_vi, cfg.output_dir,
+                                             file_space=min(128, len(ascii_title(file_title)) + 8))
                     check_cancel(cancel)
                     summary = {"title": item["title"], "folder": str(item["folder"]), "segments": len(zh), "review": sum(s.review for s in zh), "status": status, "source": source, "completed_at": time.strftime("%Y-%m-%d %H:%M:%S"), "duration": duration, "model": recognizer.plan.model, "comparison_differences": comparison_count}
                     atomic_text(item["folder"] / "result.json", json.dumps(summary, ensure_ascii=False, indent=2))
@@ -130,6 +133,10 @@ def process_batch(sources, cfg: Settings, emit, cancel):
                     except (OSError, TimeoutError):
                         emit("log", message="Đã lưu đủ ba file nhưng chưa đổi tên được thư mục. Hãy đóng chương trình đang giữ thư mục kết quả.")
                     summary.update(folder=str(item["folder"]), title_zh=title_zh, title_vi=title_vi)
+                    try:
+                        summary.update(rename_transcripts(item["folder"], file_title))
+                    except OSError:
+                        emit("log", message="Đã lưu transcript nhưng chưa đổi tên được file. Hãy đóng ứng dụng đang mở các file kết quả.")
                     completed_cache[source] = item
                     results.append(summary)
                     try:

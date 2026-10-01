@@ -4,7 +4,7 @@ from pathlib import Path
 from types import SimpleNamespace
 root=Path(__file__).resolve().parent.parent
 sys.path.insert(0,str(root))
-work=root/'verification/v1.2.2/gui-resume';work.mkdir(parents=True,exist_ok=True)
+work=root/'verification/v1.2.3/gui-resume';work.mkdir(parents=True,exist_ok=True)
 os.environ['QT_QPA_PLATFORM']='offscreen'
 os.environ['BILISCRIBE_DATA_DIR']=str(work/'appdata')
 from biliscribe.media import extract_chunk
@@ -18,7 +18,7 @@ app=QApplication([])
 for name in ('segoeui.ttf','segoeuib.ttf','msyh.ttc'):
     QFontDatabase.addApplicationFont(str(Path(os.environ['WINDIR'])/'Fonts'/name))
 app.setStyle('Fusion');app.setStyleSheet(ui.STYLE)
-ui.sys=SimpleNamespace(frozen=True,executable=str(root/'dist/BiliScribe-1.2.2/BiliScribe.exe'))
+ui.sys=SimpleNamespace(frozen=True,executable=str(root/'dist/BiliScribe-1.2.3/BiliScribe.exe'))
 win=ui.MainWindow();win.show()
 win.local_files=[str(clip)];win.output.setText(str(work/'result'))
 win.profile.setCurrentIndex(win.profile.findData('fast'))
@@ -51,7 +51,7 @@ def poll():
         result['folder_name']=win.last_folder.name
         assert win.last_folder.name=='Những câu chuyện kỳ lạ về luật lệ - 规则怪谈'
         result['final_files']=sorted(p.name for p in win.last_folder.iterdir())
-        assert result['final_files']==['doi_chieu_zh.txt','transcript_zh.srt','transcript_zh.txt']
+        assert result['final_files']==['Nhung cau chuyen ky la ve luat le_zh.srt','Nhung cau chuyen ky la ve luat le_zh.txt','doi_chieu_zh.txt']
         assert clip.is_file() and not (work/'result/.biliscribe-cache').exists()
         win.grab().save(str(work/'gui-resume.png'))
         (work/'summary.json').write_text(json.dumps(result,ensure_ascii=False,indent=2),'utf-8')

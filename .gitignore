@@ -22,3 +22,8 @@ job-*.json
 # Distributed as release assets, not in Git
 vendor/*.exe
 vendor/models/**/*.onnx
+
+# Local cleanup reports
+docs/DON_DEP.md
+docs/cleanup-manifest.json
+docs/cleanup-result.json

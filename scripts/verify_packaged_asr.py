@@ -11,7 +11,7 @@ import psutil
 
 root = Path(__file__).resolve().parent.parent
 sys.path.insert(0,str(root))
-work = root / 'verification/v1.2.2/packaged-cpu'
+work = root / 'verification/v1.2.3/packaged-cpu'
 work.mkdir(parents=True, exist_ok=True)
 request = {
     'sources': [str(root / 'release/Mau-kiem-thu/audio.mp3')],
@@ -29,7 +29,7 @@ for key in ('VIRTUAL_ENV', 'PYTHONHOME', 'PYTHONPATH'):
 t0 = time.monotonic()
 events = queue.Queue()
 with (work/'stderr.log').open('w', encoding='utf-8') as err:
-    proc = subprocess.Popen([str(root/'dist/BiliScribe-1.2.2/BiliScribeWorker.exe'), '--worker', str(work/'request.json')],
+    proc = subprocess.Popen([str(root/'dist/BiliScribe-1.2.3/BiliScribeWorker.exe'), '--worker', str(work/'request.json')],
         cwd=work, env=env, stdout=subprocess.PIPE, stderr=err, stdin=subprocess.PIPE,
         text=True, encoding='utf-8', creationflags=subprocess.CREATE_NO_WINDOW)
     def read():
@@ -62,16 +62,17 @@ while not events.empty(): rows.append(events.get())
 completed=[x for x in rows if x['event']=='result']
 assert proc.returncode==0 and completed, rows[-3:]
 folder=Path(completed[0]['folder'])
-from biliscribe.output_cleanup import FINAL_FILES
+from biliscribe.output_files import transcript_file
+FINAL_FILES={completed[0]["txt_file"], completed[0]["srt_file"], "doi_chieu_zh.txt"}
 import re
 assert {p.name for p in folder.iterdir()} == FINAL_FILES
 assert not (folder.parent/'.biliscribe-cache').exists()
-text=(folder/'transcript_zh.txt').read_text('utf-8-sig')
+text=transcript_file(folder, '.txt').read_text('utf-8-sig')
 duration=completed[0]['duration']
 def seconds(value):
     h,m,s=value.replace(',', '.').split(':')
     return int(h)*3600+int(m)*60+float(s)
-pairs=re.findall(r'(\d{2}:\d{2}:\d{2},\d{3}) --> (\d{2}:\d{2}:\d{2},\d{3})', (folder/'transcript_zh.srt').read_text('utf-8-sig'))
+pairs=re.findall(r'(\d{2}:\d{2}:\d{2},\d{3}) --> (\d{2}:\d{2}:\d{2},\d{3})', transcript_file(folder, '.srt').read_text('utf-8-sig'))
 segments=[{'start':seconds(a),'end':seconds(b)} for a,b in pairs]
 assert len(text)>3000 and segments[-1]['end']>duration-4
 assert all(0<=s['start']<s['end']<=duration+0.001 for s in segments)
