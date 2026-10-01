@@ -143,7 +143,7 @@ def test_api_pipeline_avoids_gpu_detection_and_keeps_three_files(tmp_path,monkey
     monkeypatch.setattr(PixazoTranscriber,'transcribe',lambda *a:([Segment(0,1,'你好。')],1))
     cfg=Settings.from_dict({'profile':'pixazo','output_dir':str(tmp_path)})
     assert pipeline.process_batch(['source'],cfg,lambda *a,**k:None,threading.Event())==0
-    assert sorted(p.name for p in folder.iterdir())==['doi_chieu_zh.txt','transcript_zh.srt','transcript_zh.txt']
+    assert sorted(p.name for p in item['folder'].iterdir())==['doi_chieu_zh.txt','transcript_zh.srt','transcript_zh.txt']
     assert not work.exists()
 
 

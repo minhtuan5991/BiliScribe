@@ -7,7 +7,7 @@ root = Path(__file__).resolve().parent.parent
 release = root / 'release'
 release.mkdir(exist_ok=True)
 source_paths = ['biliscribe', 'main.py', 'tests', 'scripts', 'installer', 'assets', 'docs', 'licenses', 'BiliScribe.spec', 'BUILD_WINDOWS.ps1', 'README_VI.md', 'README.md', 'THIRD_PARTY_NOTICES.md', 'requirements.txt', 'requirements-lock.txt', 'vendor', 'pytest.ini']
-with zipfile.ZipFile(release / 'BiliScribe-Source-1.2.1.zip', 'w', zipfile.ZIP_DEFLATED, compresslevel=6) as archive:
+with zipfile.ZipFile(release / 'BiliScribe-Source-1.2.2.zip', 'w', zipfile.ZIP_DEFLATED, compresslevel=6) as archive:
     for value in source_paths:
         item = root / value
         for path in item.rglob('*') if item.is_dir() else [item]:

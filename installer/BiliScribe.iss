@@ -1,5 +1,5 @@
 ﻿#define MyAppName "BiliScribe"
-#define MyAppVersion "1.2.1"
+#define MyAppVersion "1.2.2"
 [Setup]
 AppId={{59136726-3F92-476B-9D2B-435184773E58}
 AppName={#MyAppName}
@@ -12,7 +12,7 @@ ArchitecturesAllowed=x64compatible
 ArchitecturesInstallIn64BitMode=x64compatible
 MinVersion=10.0.17763
 OutputDir=..\release
-OutputBaseFilename=BiliScribe-Setup-1.2.1-x64
+OutputBaseFilename=BiliScribe-Setup-1.2.2-x64
 SetupIconFile=..\assets\app.ico
 UninstallDisplayIcon={app}\BiliScribe.exe
 UninstallDisplayName=BiliScribe
@@ -29,7 +29,7 @@ Name: "vietnamese"; MessagesFile: "Vietnamese.isl"
 [Tasks]
 Name: "desktopicon"; Description: "Tạo lối tắt ngoài Desktop"; GroupDescription: "Lối tắt:"
 [Files]
-Source: "..\dist\BiliScribe-1.2.1\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "..\dist\BiliScribe-1.2.2\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
 Source: "..\docs\*"; DestDir: "{app}\docs"; Flags: ignoreversion recursesubdirs createallsubdirs
 Source: "..\THIRD_PARTY_NOTICES.md"; DestDir: "{app}"; Flags: ignoreversion
 [Icons]

@@ -1,5 +1,6 @@
 import json
 import threading
+from pathlib import Path
 from concurrent.futures import ThreadPoolExecutor
 from types import SimpleNamespace
 
@@ -58,7 +59,7 @@ def test_completed_video_is_recorded_before_batch_cancellation(tmp_path, monkeyp
         pipeline.process_batch(['first', 'second'], Settings.from_dict({'profile': 'fast', 'output_dir': str(tmp_path)}), emit, cancel)
     assert len(load_history()) == 1
     assert load_history()[0]['title'] == 'first'
-    assert (tmp_path / f'first [{source_key("first")[:8]}]' / 'transcript_zh.txt').is_file()
+    assert (Path(load_history()[0]['folder']) / 'transcript_zh.txt').is_file()
 
 
 def test_cpu_auto_uses_bundled_model_and_translation_uses_whisper():

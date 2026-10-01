@@ -1,10 +1,10 @@
-# BiliScribe 1.2.1
+# BiliScribe 1.2.2
 
 Dán link Bilibili → tải âm thanh → tạo transcript tiếng Trung trên máy hoặc qua Pixazo API.
 
 ## Cài và sử dụng
 
-1. Mở `release\BiliScribe-Setup-1.2.1-x64.exe`, bấm **Tiếp theo → Cài đặt**. Có shortcut Start Menu, tùy chọn Desktop và mục gỡ trong Settings > Apps.
+1. Mở `release\BiliScribe-Setup-1.2.2-x64.exe`, bấm **Tiếp theo → Cài đặt**. Có shortcut Start Menu, tùy chọn Desktop và mục gỡ trong Settings > Apps.
 2. Dán link, mỗi dòng một video. Link có `?p=2` giữ đúng phần 2. Có thể chọn file MP3/M4A/WAV/MP4 trên máy.
 3. Chọn chế độ và thư mục kết quả; có thể chọn `D:\Download-Transcript Bilibili\Ket-qua`.
 4. Bấm **Bắt đầu tạo transcript**. Khi xong, dùng **Mở TXT**, **Mở SRT**, **Đối chiếu** hoặc **Mở thư mục**.
@@ -97,3 +97,11 @@ Bộ cài tạo cục bộ, chưa ký chứng thư số; Windows có thể hiể
 Mỗi lần mở app, BiliScribe kiểm tra bản phát hành ổn định mới nhất trên GitHub ở luồng nền. Khi có bản mới, nút **Có bản … / Mở trang tải** xuất hiện ở thanh bên trái. Bấm nút để mở trang phát hành, tải bộ cài rồi đóng app trước khi cài nâng cấp. App không tự tải hay tự chạy bộ cài.
 
 Không cần token GitHub. Yêu cầu kiểm tra chỉ gửi thông tin phiên bản app, không gửi âm thanh, transcript hoặc key Pixazo. Mất mạng, GitHub giới hạn truy cập hoặc lỗi phản hồi sẽ được ghi trong Nhật ký; bạn vẫn dùng app bình thường và lần mở tiếp theo app sẽ kiểm tra lại. Cài đặt và mô hình đã lưu được giữ nguyên.
+
+## Tên thư mục kết quả (từ 1.2.2)
+
+Sau khi xử lý thành công, thư mục mang tên **Tên tiếng Việt - Tên tiếng Trung**, ví dụ `Những câu chuyện kỳ lạ về luật lệ - 规则怪谈`. App bỏ mã BV/mã nội bộ ở cuối, emoji, ký tự ẩn, hashtag và các nhãn quảng bá đã nhận diện như `【完结短剧】`, `【恐怖怪谈】`, `完整版`. Các từ có thể thuộc tên truyện và số tập được giữ lại. Tiêu đề quá dài được rút gọn để tương thích đường dẫn Windows.
+
+Chỉ tiêu đề đã làm sạch được gửi đến endpoint web Google Translate để dịch sang Việt, không gửi audio/transcript/API key. Không cần nhập thêm key. Bản dịch máy có thể chưa đúng sắc thái; endpoint web không có cam kết ổn định như Cloud Translation API. Dịch có giới hạn chờ 5 giây và lưu cache cục bộ để tái sử dụng. Khi mất mạng/dịch thất bại, app giữ tên Trung sạch và ghi lý do vào Nhật ký; transcript vẫn được lưu.
+
+Tên trùng thêm `(2)`, `(3)`; không ghi đè thư mục cũ. Tác vụ dở vẫn giữ tên nội bộ/checkpoint để tiếp tục, chỉ đổi tên sau khi hoàn tất và dọn còn ba file. Không tự đổi tên kết quả đã tạo bởi bản cũ. Mọi chế độ CPU/GPU/Pixazo và cài đặt hiện có được giữ nguyên.

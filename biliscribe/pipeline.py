@@ -15,6 +15,7 @@ from .transcribe import Transcriber, write_outputs
 from .sensevoice import SenseVoiceTranscriber
 from .comparison import compare_transcripts
 from .output_cleanup import cleanup_result, cleanup_cache
+from .titles import clean_title, vietnamese_title, output_name, rename_completed
 
 
 def process_batch(sources, cfg: Settings, emit, cancel):
@@ -116,9 +117,19 @@ def process_batch(sources, cfg: Settings, emit, cancel):
                     for language in ("zh", "en"):
                         (item["folder"] / f"transcript_{language}.partial.txt").unlink(missing_ok=True)
                     status = "Hoàn tất" if zh else "Không phát hiện lời nói"
+                    emit("item", index=i, stage="Đặt tên thư mục kết quả", progress=98)
+                    title_zh = clean_title(item["title"])
+                    title_vi = vietnamese_title(title_zh, cancel, emit)
+                    final_name = output_name(title_zh, title_vi, cfg.output_dir)
+                    check_cancel(cancel)
                     summary = {"title": item["title"], "folder": str(item["folder"]), "segments": len(zh), "review": sum(s.review for s in zh), "status": status, "source": source, "completed_at": time.strftime("%Y-%m-%d %H:%M:%S"), "duration": duration, "model": recognizer.plan.model, "comparison_differences": comparison_count}
                     atomic_text(item["folder"] / "result.json", json.dumps(summary, ensure_ascii=False, indent=2))
                     cleanup_result(item, cfg)
+                    try:
+                        rename_completed(item, cfg, final_name)
+                    except (OSError, TimeoutError):
+                        emit("log", message="Đã lưu đủ ba file nhưng chưa đổi tên được thư mục. Hãy đóng chương trình đang giữ thư mục kết quả.")
+                    summary.update(folder=str(item["folder"]), title_zh=title_zh, title_vi=title_vi)
                     completed_cache[source] = item
                     results.append(summary)
                     try:

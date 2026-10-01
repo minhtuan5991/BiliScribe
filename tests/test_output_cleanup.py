@@ -50,6 +50,7 @@ def test_pipeline_cleanup_only_on_success(tmp_path, monkeypatch, outcome):
     monkeypatch.setenv("BILISCRIBE_DATA_DIR", str(tmp_path / "appdata"))
     monkeypatch.setattr(pipeline, "detect_hardware", lambda: Hardware(8, 4, 4))
     monkeypatch.setattr(pipeline, "prepare_source", lambda *args: item)
+    monkeypatch.setattr(pipeline, "vietnamese_title", lambda *args: "Kiểm thử")
     (item["work"] / "source.m4a").write_bytes(b"cache")
     (item["folder"] / "audio.mp3").write_bytes(b"audio")
     cancel = threading.Event(); events = []

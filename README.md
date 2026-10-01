@@ -2,15 +2,16 @@
 
 Ứng dụng Windows tải âm thanh Bilibili và tạo transcript tiếng Trung bằng CPU/GPU hoặc Pixazo API.
 
-**Phiên bản hiện tại: 1.2.1**
+**Phiên bản hiện tại: 1.2.2**
 
 - [Tải bộ cài Windows](https://github.com/minhtuan5991/BiliScribe/releases/latest)
 - [Hướng dẫn tiếng Việt](README_VI.md)
-- [Báo cáo kiểm thử 1.2.1](docs/KIEM_THU_1.2.1.md)
+- [Báo cáo kiểm thử 1.2.2](docs/KIEM_THU_1.2.2.md)
 
 ## Tính năng
 
 - Tự kiểm tra bản cập nhật khi mở app, thông báo bằng nút mở trang phát hành GitHub.
+- Thư mục hoàn tất có tên Việt - Trung, bỏ mã nội bộ, tránh ghi đè khi trùng tên. Chỉ tiêu đề được gửi Google Translate; xem giới hạn trong hướng dẫn.
 - Link Bilibili hoặc file audio/video trên máy.
 - SenseVoice CPU, Whisper Large v3/Turbo với CPU/GPU và chế độ đối chiếu.
 - Pixazo Qwen ASR Realtime, tối đa 4 đoạn song song, lưu tiến độ và chạy tiếp.
@@ -32,7 +33,7 @@ Mô hình Whisper lớn chỉ tải khi người dùng chọn chế độ tươn
 
 ## Kiểm thử và giới hạn
 
-Bản 1.2.1 có 65 kiểm thử tự động đạt, đã thử EXE và nâng cấp từ 1.2.0. Bản 1.2.0 trước đó đã thử EXE với Pixazo thật (90 giây audio, 3 kết nối, khoảng 47 giây xử lý), CPU dừng/chạy tiếp, cài đặt/nâng cấp/gỡ. Mốc SRT có thể là ước lượng; chưa công bố CER/WER. Bộ cài chưa ký số.
+Bản 1.2.2 có 76 kiểm thử tự động đạt, đã thử EXE với tên thư mục Việt - Trung và dừng/chạy tiếp. Bản 1.2.0 trước đó đã thử EXE với Pixazo thật (90 giây audio, 3 kết nối, khoảng 47 giây xử lý), CPU dừng/chạy tiếp, cài đặt/nâng cấp/gỡ. Mốc SRT có thể là ước lượng; chưa công bố CER/WER. Bộ cài chưa ký số.
 
 Phần tải Bilibili của 1.2.0 vẫn dùng yt-dlp; chưa bổ sung tải nhiều HTTP Range song song. Tốc độ tải phụ thuộc nguồn và đường truyền.
 
